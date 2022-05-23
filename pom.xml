@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.3.1.RELEASE</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+    <groupId>com.example</groupId>
+    <artifactId>imgDemo</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>imgDemo</name>
+    <description>Demo project for Spring Boot</description>
+    <!--配置Maven仓库路径。-->
+    <repositories>
+        <repository>
+            <id>com.e-iceblue</id>
+            <name>e-iceblue</name>
+            <url>http://repo.e-iceblue.com/nexus/content/groups/public/</url>
+        </repository>
+    </repositories>
+
+    <properties>
+        <java.version>1.8</java.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.junit.vintage</groupId>
+                    <artifactId>junit-vintage-engine</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <!-- PDF转 图片 -->
+        <!-- https://mvnrepository.com/artifact/org.codehaus.izpack/izpack-panel -->
+        <dependency>
+            <groupId>org.codehaus.izpack</groupId>
+            <artifactId>izpack-panel</artifactId>
+            <version>5.1.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.pdfbox</groupId>
+            <artifactId>pdfbox</artifactId>
+            <version>2.0.6</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.pdfbox</groupId>
+            <artifactId>pdfbox-tools</artifactId>
+            <version>2.0.6</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.aspose.slides</groupId>
+            <artifactId>com-aspose-slides</artifactId>
+            <version>15.9.0</version>
+            <scope>system</scope>
+            <systemPath>${pom.basedir}/src/lib/aspose.slides-15.9.0.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>com.aspose.cells</groupId>
+            <artifactId>com-aspose-cells</artifactId>
+            <version>8.5.2</version>
+            <scope>system</scope>
+            <systemPath>${pom.basedir}/src/lib/aspose-cells-8.5.2.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>com.aspose.words</groupId>
+            <artifactId>com-aspose-words</artifactId>
+            <version>8.5.2</version>
+            <scope>system</scope>
+            <systemPath>${pom.basedir}/src/lib/aspose-words-14.9.0-jdk16.jar</systemPath>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <fork>true</fork>
+                </configuration>
+            </plugin>
+<!--            <plugin>-->
+<!--                <groupId>org.sonarsource.scanner.maven</groupId>-->
+<!--                <artifactId>sonar-maven-plugin</artifactId>-->
+<!--                <version>3.7.0.1746</version>-->
+<!--            </plugin>-->
+        </plugins>
+
+        <resources>
+            <resource>
+                <directory>src/main/java</directory>
+                <includes>
+                    <include>**/*.xml</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>**/*</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>lib</directory>
+                <targetPath>/BOOT-INF/lib/</targetPath>
+                <includes>
+                    <include>**/*.jar</include>
+                </includes>
+            </resource>
+        </resources>
+        <finalName>XX</finalName>
+    </build>
+
+</project>
