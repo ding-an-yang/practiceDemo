@@ -1,6 +1,6 @@
 package com.example.FileToPdf;
 
-public class out {
+public class Out {
 
     public static void outMessage(String inPath,String outPath,long now,long old){
        double time = (now - old) / 1000.0;

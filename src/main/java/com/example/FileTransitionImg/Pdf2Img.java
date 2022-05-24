@@ -16,24 +16,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Iterator;
 
+import static com.example.FileToPdf.DocToPdf.docToPdf;
+
 public class Pdf2Img {
-
-    public static void main(String[] args) {
-        String inPath = "/Users/qiush7engkeji/Desktop/project/ideaProject/test/test的副本.docx";
-        String outPath = "/Users/qiush7engkeji/Desktop/project/ideaProject/test/test的副本.pdf";
-        String pngPath = "/Users/qiush7engkeji/Desktop/project/ideaProject/test/imges/";
-        DocToPdf docToPdf = new DocToPdf();
-        docToPdf.docToPdf(inPath, outPath);
-        try {
-            new Pdf2Img().tranfer(outPath, pngPath, 1f);
-        } catch (Exception e) {
-            System.err.println("出错啦: " + e.getMessage());
-        }
-    }
-
     /**
      * 将指定pdf文件的首页转换为指定路径的缩略图
-     *
      * @param filepath  原文件路径，例如d:/test.pdf
      * @param imagepath 图片生成路径，例如 d:/
      * @param zoom      缩略图显示倍数，1表示不缩放，0.3则缩小到30%
@@ -41,12 +28,15 @@ public class Pdf2Img {
      */
     public static void tranfer(String filepath, String imagepath, float zoom) {
         Document document =  new Document();
-        float rotation = 0f;
+        DocToPdf docToPdf = new DocToPdf();
+        float rotation = 0f;;
         try {
             /* 生成图片的名字*/
             //String imageName = UUID.randomUUID().toString();
             String imageName = "img";
-            document.setFile(filepath);
+            // pdf文件设置
+            document.setFile(docToPdf.docToPdf(filepath));
+            // 读取pdf文件的页数
             for (int i = 0; i < document.getNumberOfPages(); i++) {
                 BufferedImage img =
                         (BufferedImage) document.getPageImage(i, GraphicsRenderingHints.SCREEN,
@@ -62,7 +52,7 @@ public class Pdf2Img {
                     fileFolder.mkdirs();
                 }*/
                 File outFile =
-                        new File(imagepath+"\\"+imageName+"\\"+imageName+"-" + (i + 1) + ".jpg");
+                        new File(imagepath + imageName+"-" + (i + 1) + ".jpg");
                 FileOutputStream out = new FileOutputStream(outFile);
                 ImageOutputStream outImage = ImageIO.createImageOutputStream(out);
                 writer.setOutput(outImage);

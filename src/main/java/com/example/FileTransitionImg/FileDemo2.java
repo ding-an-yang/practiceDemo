@@ -31,7 +31,6 @@ public class FileDemo2 {
 
     /**
      * 列出指定目录下所有文件  ，返回file []
-     *
      * @param filePath
      */
     private static void listFilesDemo(String filePath) {
@@ -41,8 +40,10 @@ public class FileDemo2 {
             System.out.println(f);
         }
     }
-
-    //列出指定目录下所有文件,返回File[]
+    /**
+     * 列出指定目录下所有文件,返回File[]
+     * @param filePath
+     */
     public static void listFilesDemo2(String filePath) {
         File file = new File(filePath);
         //用匿名内部类实现过滤的操作。

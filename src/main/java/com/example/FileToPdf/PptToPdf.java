@@ -6,12 +6,18 @@ import java.io.File;
 import java.io.FileOutputStream;
 
 import static com.example.FileToPdf.License.getPptLicense;
-import static com.example.FileToPdf.out.outMessage;
+import static com.example.FileToPdf.Out.outMessage;
 
 public class PptToPdf {
 
+    /**
+     * PPT转pdf格式
+     * @param inPath ppt文件路径
+     * @param outPath 转出的pdf
+     */
     public static void pptToPdf(String inPath, String outPath) {
-        if (!getPptLicense()) {          // 验证License 若不验证则转化出的pdf文档会有水印产生
+        // 验证License 若不验证则转化出的pdf文档会有水印产生
+        if (!getPptLicense()) {
             return;
         }
         try {

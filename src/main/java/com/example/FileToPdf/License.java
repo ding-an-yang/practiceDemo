@@ -7,7 +7,8 @@ public class License {
     public static boolean getExcelLicense() {
         boolean result = false;
         try {
-            InputStream is = ExcelToPdf.class.getClassLoader().getResourceAsStream("license.xml"); //  license.xml应放在..\WebRoot\WEB-INF\classes路径下
+            //  license.xml应放在..\WebRoot\WEB-INF\classes路径下
+            InputStream is = ExcelToPdf.class.getClassLoader().getResourceAsStream("license.xml");
             com.aspose.cells.License aposeLic = new com.aspose.cells.License();
             aposeLic.setLicense(is);
             result = true;
@@ -32,7 +33,7 @@ public class License {
     public static boolean getPptLicense() {
         boolean result = false;
         try {
-            InputStream is = PptToPdf.class.getClassLoader().getResourceAsStream("\\license.xml");
+            InputStream is = PptToPdf.class.getClassLoader().getResourceAsStream("license.xml");
             com.aspose.slides.License aposeLic = new com.aspose.slides.License();
             aposeLic.setLicense(is);
             result = true;
