@@ -1,11 +1,12 @@
 package com.example.FileToPdf;
 
-import com.aspose.words.Document;
-import com.aspose.words.SaveFormat;
+import com.aspose.slides.PdfOptions;
+import com.aspose.words.*;
+import fr.opensagres.poi.xwpf.converter.pdf.PdfConverter;
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 
 import static com.example.FileToPdf.License.getWordLicense;
 import static com.example.FileToPdf.Out.outMessage;
@@ -32,6 +33,19 @@ public class DocToPdf {
             // 验证License 是将要被转化的word文档
             Document doc = new Document(inPath);
             System.out.println("开始解析word文档" + inPath);
+            TableCollection tables = doc.getFirstSection().getBody().getTables();
+            for (Table table : tables) {
+                RowCollection rows = table.getRows();
+                table.setAllowAutoFit(false);
+                for (Row row : rows) {
+                    CellCollection cells = row.getCells();
+                    for (Cell cell : cells) {
+                        CellFormat cellFormat = cell.getCellFormat();
+                        cellFormat.setFitText(false);
+                        cellFormat.setWrapText(true);
+                    }
+                }
+            }
             doc.save(os, SaveFormat.PDF);
             // 全面支持DOC, DOCX,
             // OOXML, RTF HTML,
@@ -59,4 +73,53 @@ public class DocToPdf {
         name = name.substring(0, name.lastIndexOf("."));
         return parent + "/" + name;
     }
+
+    /**
+     * 将word的内容转为html返回字符串，图片全部转为base64编码。
+     * @param inPath
+     * @return
+     */
+    public static String wordToHtml(String inPath) {
+        // 验证License 若不验证则转化出的pdf文档会有水印产生
+        if (!getWordLicense()) {
+            System.out.println(inPath + ",解析水印失败，请重试");
+            return "";
+        }
+        ByteArrayOutputStream htmlStream = new ByteArrayOutputStream();
+        String htmlText = "";
+        try {
+            Document doc = new Document(inPath);
+            HtmlSaveOptions opts = new HtmlSaveOptions(SaveFormat.HTML);
+            opts.setExportXhtmlTransitional(true);
+            opts.setExportImagesAsBase64(true);
+            opts.setExportPageSetup(true);
+            doc.save(htmlStream,opts);
+            htmlText = new String(htmlStream.toByteArray(), StandardCharsets.UTF_8);
+            htmlStream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return htmlText;
+    }
+
+    /**
+     * Word文档转换
+     *
+     * @param inputFile
+     * @param pdfFile
+     */
+    public static boolean word2PDF(String inputFile, String pdfFile) throws IOException {
+        FileInputStream fileInputStream = new FileInputStream("F:\\poi笔记.docx");
+        XWPFDocument xwpfDocument = new XWPFDocument(fileInputStream);
+        //PdfOptions pdfOptions = PdfOptions.class;
+
+        FileOutputStream fileOutputStream = new FileOutputStream("F:\\poi笔记.pdf");
+        //PdfConverter.getInstance().convert(xwpfDocument,fileOutputStream,new PdfOptions());
+        fileInputStream.close();
+        fileOutputStream.close();
+
+        return false;
+    }
+
+
 }

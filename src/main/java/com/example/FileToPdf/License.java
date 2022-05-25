@@ -29,6 +29,9 @@ public class License {
             e.printStackTrace();
         }
         return result;
+
+
+
     }
     public static boolean getPptLicense() {
         boolean result = false;
