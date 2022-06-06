@@ -1,7 +1,8 @@
 package com.example.FileTransitionImg;
 
 import com.example.FileToPdf.DocToPdf;
-import com.ibm.icu.impl.ICUNotifier;
+import com.itextpdf.text.pdf.PdfWriter;
+import com.spire.pdf.PdfDocument;
 import org.icepdf.core.exceptions.PDFException;
 import org.icepdf.core.exceptions.PDFSecurityException;
 import org.icepdf.core.pobjects.Document;
@@ -17,8 +18,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Iterator;
 
-import static com.example.FileToPdf.DocToPdf.createPDFFile;
-import static com.example.FileToPdf.DocToPdf.docToPdf;
 
 public class Pdf2Img {
 
@@ -78,6 +77,8 @@ public class Pdf2Img {
             e.printStackTrace();
         } catch (InterruptedException e) {
             e.printStackTrace();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 

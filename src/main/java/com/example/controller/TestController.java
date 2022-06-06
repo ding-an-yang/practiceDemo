@@ -1,5 +1,6 @@
 package com.example.controller;
 
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -36,5 +37,15 @@ public class TestController {
         // 5  共15张图片，需要时间（s）：10.858 放大清晰度有损
         // 20 共15张图片，需要时间（s）：91.506 可以达到wps效果，时间太慢
         return "转换完成！";
+    }
+
+    @RequestMapping(value = "wordTopdf")
+    public String wordToPdf(@PathVariable String fileName) throws Exception {
+        String inFile = "/Users/qiush7engkeji/Desktop/project/ideaProject/test/test1/2.docx";
+        String outFile = "/Users/qiush7engkeji/Desktop/project/ideaProject/test/替换.docx";
+        //transfer(inFile, outFile);
+        //copyFile("/Users/qiush7engkeji/Desktop/project/ideaProject/test/read.pdf", outFile);
+        docToPdf(fileName);
+        return "";
     }
 }

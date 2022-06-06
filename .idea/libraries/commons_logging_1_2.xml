@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="commons-logging-1.2">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/src/lib/commons-logging-1.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/lib/fontbox-2.0.20.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/lib/itextpdf-5.5.13.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/lib/jacob.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/lib/pdfbox-2.0.20.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
