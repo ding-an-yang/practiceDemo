@@ -22,16 +22,17 @@ public class PdfMerge {
         //合并pdf生成的文件名
         String destinationFileName =new Date().getTime()+".pdf";
         // 合并后pdf存放路径
-        String bothPath =  "/Users/qiush7engkeji/Desktop/project/ideaProject/test/";
+        String bothPath =  "/Users/qiush7engkeji/Desktop/project/ideaProject/test/test1/PDF/";
         File file3 = new File(bothPath);
         try{
             if(!file3.exists()){
                 file3.mkdirs();
             }
             //这是需要合并的PDF文件
-            mergePdf.addSource("/Users/qiush7engkeji/Desktop/project/ideaProject/test/测试用word文本.pdf");
-            mergePdf.addSource("/Users/qiush7engkeji/Desktop/project/ideaProject/test/报表SQL的副本.pdf");
-            mergePdf.addSource("/Users/qiush7engkeji/Desktop/project/ideaProject/test/test.pdf");
+            //mergePdf.addSource("/Users/qiush7engkeji/Desktop/project/ideaProject/test/测试用word文本.pdf");
+            for (int i = 1; i < 12; i++) {
+                mergePdf.addSource("/Users/qiush7engkeji/Desktop/project/ideaProject/test/test1/PDF/"+i+".pdf");
+            }
             //设置合并生成pdf文件名称
             mergePdf.setDestinationFileName(bothPath + File.separator + destinationFileName);
             //合并pdf

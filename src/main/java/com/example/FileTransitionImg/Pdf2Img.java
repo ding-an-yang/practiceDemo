@@ -46,7 +46,7 @@ public class Pdf2Img {
             //String imageName = UUID.randomUUID().toString();
             String imageName = "img";
             // pdf文件设置
-            document.setFile(docToPdf.docToPdf(filepath));
+            //document.setFile(docToPdf.docToPdf(filepath));
             // 读取pdf文件的页数
             for (int i = 0; i < document.getNumberOfPages(); i++) {
                 BufferedImage img =
@@ -69,14 +69,6 @@ public class Pdf2Img {
                 writer.setOutput(outImage);
                 writer.write(new IIOImage(img, null, null));
             }
-        } catch (PDFException e) {
-            e.printStackTrace();
-        } catch (PDFSecurityException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

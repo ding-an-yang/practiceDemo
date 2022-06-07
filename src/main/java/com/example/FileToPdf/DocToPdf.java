@@ -6,7 +6,11 @@ import com.itextpdf.text.Chunk;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.pdf.PdfWriter;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.lang.reflect.Field;
 import java.nio.ByteBuffer;
@@ -32,69 +36,52 @@ import static com.example.util.ReplaceWord.replaceWord;
 public class DocToPdf {
 
 
-    public static String docToPdf(String wordFilePath) throws Exception {
-        // 验证License 若不验证则转化出的pdf文档会有水印产生
-        if (!getWordLicense()) {
-            System.out.println(wordFilePath + ",解析水印失败，请重试");
-            return "";
-        }
-        String PDFFile = "";
-        try {
-            long old = System.currentTimeMillis();
-            PDFFile = createPDFFile(wordFilePath);
-            // 新建一个pdf文档
-            File file = new File(PDFFile + ".pdf");
-            FileOutputStream os = new FileOutputStream(file);
-            // 验证License 是将要被转化的word文档
-            Document doc = new Document(wordFilePath);
-            // 处理Word中的表格数据
-            TableCollection tables = doc.getFirstSection().getBody().getTables();
-            for (Table table : tables) {
-                RowCollection rows = table.getRows();
-                table.setAllowAutoFit(false);
-                for (Row row : rows) {
-                    CellCollection cells = row.getCells();
-                    for (Cell cell : cells) {
-                        CellFormat cellFormat = cell.getCellFormat();
-                        cellFormat.setFitText(false);
-                        cellFormat.setWrapText(true);
+    public static String docToPdf(MultipartFile[] files){
+        for (MultipartFile file:files) {
+            String wordFilePath = file.getOriginalFilename();
+            System.out.println(wordFilePath);
+            // 验证License 若不验证则转化出的pdf文档会有水印产生
+            if (!getWordLicense()) {
+                System.out.println(wordFilePath + ",解析水印失败，请重试");
+                return "";
+            }
+            String PDFFile = "";
+            try {
+                long old = System.currentTimeMillis();
+                //PDFFile = createPDFFile(wordFilePath);
+                // 新建一个pdf文档
+                File file2 = new File(wordFilePath.substring(0, wordFilePath.lastIndexOf(".")) + ".pdf");
+//                File file2 = new File("/Users/qiush7engkeji/Desktop/project/ideaProject/test/Mac测试.pdf");
+                FileOutputStream os = new FileOutputStream(file2);
+                // 验证License 是将要被转化的word文档
+                Document doc = new Document(file.getInputStream());
+                // 处理Word中的表格数据
+                TableCollection tables = doc.getFirstSection().getBody().getTables();
+                for (Table table : tables) {
+                    RowCollection rows = table.getRows();
+                    table.setAllowAutoFit(false);
+                    for (Row row : rows) {
+                        CellCollection cells = row.getCells();
+                        for (Cell cell : cells) {
+                            CellFormat cellFormat = cell.getCellFormat();
+                            cellFormat.setFitText(false);
+                            cellFormat.setWrapText(true);
+                        }
                     }
                 }
+                // 存为PDF格式
+                doc.save(os, SaveFormat.PDF);
+                long now = System.currentTimeMillis();
+                os.close();
+                //outMessage(wordFilePath, PDFFile + ".pdf", now, old);
+                //outMessage(wordFilePath, wordFilePath.substring(0, wordFilePath.lastIndexOf(".")-1)  + ".pdf", now, old);
+            } catch (Exception e) {
+                System.out.println(wordFilePath + "转换失败，请重试");
+                e.printStackTrace();
             }
-            doc.save(os, SaveFormat.PDF);
-
-            // 全面支持DOC, DOCX,
-            // OOXML, RTF HTML,
-            // OpenDocument,
-            // PDF, EPUB, XPS,
-            // SWF 相互转换
-            long now = System.currentTimeMillis();
-            os.close();
-            outMessage(wordFilePath, PDFFile + ".pdf", now, old);
-        } catch (Exception e) {
-            System.out.println(wordFilePath + "转换失败，请重试");
-            e.printStackTrace();
+            return PDFFile + ".pdf";
         }
-        return PDFFile + ".pdf";
-    }
-
-    public static void setPDF(String pdfFilePath) throws Exception {
-        com.itextpdf.text.Document doc = new com.itextpdf.text.Document();
-        try {
-            FileOutputStream fos = new FileOutputStream(pdfFilePath);
-            PdfWriter.getInstance(doc, fos);
-            doc.open();
-            // 将段落行距设置为32
-            com.itextpdf.text.Paragraph para1 = new com.itextpdf.text.Paragraph(10);
-            // 在段落之前和之后设置空间
-            para1.setSpacingBefore(10);
-            para1.setSpacingAfter(10);
-            doc.add(new Chunk(""));
-            doc.add(para1);
-            doc.close();
-        } catch (DocumentException | FileNotFoundException e) {
-            e.printStackTrace();
-        }
+        return null;
     }
 
     /**
@@ -145,11 +132,11 @@ public class DocToPdf {
     }
 
     public static void main(String[] args) throws Exception {
-        String inFile = "/Users/qiush7engkeji/Desktop/project/ideaProject/test/test1/2.docx";
+        String inFile = "/Users/qiush7engkeji/Desktop/project/ideaProject/test/test1/电力交易合同-浙江省模板文字录入0607的副本.docs";
         String outFile = "/Users/qiush7engkeji/Desktop/project/ideaProject/test/替换.docx";
         //transfer(inFile, outFile);
         //copyFile("/Users/qiush7engkeji/Desktop/project/ideaProject/test/read.pdf", outFile);
-        docToPdf(inFile);
+        //docToPdf(inFile);
         //setPDF(outFile);
         //readLineByBufferedReader(outFile);
 
@@ -276,4 +263,26 @@ public class DocToPdf {
         }
         System.out.println("耗费时间：" + (System.currentTimeMillis() - start));
     }
+
+
+    /**
+     * file转MultipartFile
+     * @param file
+     * @return
+     */
+    /*public static MultipartFile getMultipartFile(File file) {
+        FileItem item = new DiskFileItemFactory().createItem("file"
+                , MediaType.MULTIPART_FORM_DATA_VALUE
+                , true
+                , file.getName());
+        try (InputStream input = new FileInputStream(file);
+             OutputStream os = item.getOutputStream()) {
+            // 流转移
+            IOUtils.copy(input, os);
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Invalid file: " + e, e);
+        }
+
+        return new CommonsMultipartFile(item);
+    }*/
 }

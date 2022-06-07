@@ -2,7 +2,9 @@ package com.example.controller;
 
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import static com.example.FileToPdf.DocToPdf.*;
 import static com.example.FileTransitionImg.Pdf2Img.tranfer;
@@ -39,13 +41,13 @@ public class TestController {
         return "转换完成！";
     }
 
-    @RequestMapping(value = "wordTopdf")
-    public String wordToPdf(@PathVariable String fileName) throws Exception {
+    @RequestMapping(value = "/wordTopdf")
+    public String wordToPdf(@RequestParam("files") MultipartFile[] files){
         String inFile = "/Users/qiush7engkeji/Desktop/project/ideaProject/test/test1/2.docx";
         String outFile = "/Users/qiush7engkeji/Desktop/project/ideaProject/test/替换.docx";
         //transfer(inFile, outFile);
         //copyFile("/Users/qiush7engkeji/Desktop/project/ideaProject/test/read.pdf", outFile);
-        docToPdf(fileName);
+        docToPdf(files);
         return "";
     }
 }
