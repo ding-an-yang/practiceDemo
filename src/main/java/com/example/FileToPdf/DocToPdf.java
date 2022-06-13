@@ -2,32 +2,25 @@ package com.example.FileToPdf;
 
 import com.aspose.words.*;
 
-import com.itextpdf.text.Chunk;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.pdf.PdfWriter;
-import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import com.example.model.Placeholder;
+import com.example.model.Placeholder2;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.lang.reflect.Field;
+import java.math.BigDecimal;
 import java.nio.ByteBuffer;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.example.FileToPdf.License.getWordLicense;
-import static com.example.FileToPdf.Out.outMessage;
 import static com.example.util.ReadFileUtil.readFileToMap;
-import static com.example.util.ReadFileUtil.spireForTableOfDoc;
 import static com.example.util.ReplaceWord.replaceWord;
 
 /**
@@ -35,6 +28,9 @@ import static com.example.util.ReplaceWord.replaceWord;
  */
 public class DocToPdf {
 
+    // 设置目标文件的映射路径
+    @Value("classpath:static/Fonts/")
+    private static Resource fontsPath;
 
     public static String docToPdf(MultipartFile[] files){
         for (MultipartFile file:files) {
@@ -50,8 +46,8 @@ public class DocToPdf {
                 long old = System.currentTimeMillis();
                 //PDFFile = createPDFFile(wordFilePath);
                 // 新建一个pdf文档
-                File file2 = new File(wordFilePath.substring(0, wordFilePath.lastIndexOf(".")) + ".pdf");
-//                File file2 = new File("/Users/qiush7engkeji/Desktop/project/ideaProject/test/Mac测试.pdf");
+  //              File file2 = new File(wordFilePath.substring(0, wordFilePath.lastIndexOf(".")) + ".pdf");
+              File file2 = new File("/Users/qiush7engkeji/Desktop/project/ideaProject/test/test1/Mac测试.pdf");
                 FileOutputStream os = new FileOutputStream(file2);
                 // 验证License 是将要被转化的word文档
                 Document doc = new Document(file.getInputStream());
@@ -83,6 +79,50 @@ public class DocToPdf {
         }
         return null;
     }
+
+    public static String docToPdf2(String  wordFilePath){
+            // 验证License 若不验证则转化出的pdf文档会有水印产生
+            if (!getWordLicense()) {
+                System.out.println(wordFilePath + ",解析水印失败，请重试");
+                return "";
+            }
+            String PDFFile = "";
+            try {
+                long old = System.currentTimeMillis();
+                PDFFile = createPDFFile(wordFilePath);
+                // 新建一个pdf文档
+                File file = new File(PDFFile+".pdf");
+                FileOutputStream os = new FileOutputStream(file);
+                // 验证License 是将要被转化的word文档
+                Document doc = new Document(wordFilePath);
+                // 处理Word中的表格数据
+                TableCollection tables = doc.getFirstSection().getBody().getTables();
+                for (Table table : tables) {
+                    RowCollection rows = table.getRows();
+                    table.setAllowAutoFit(false);
+                    for (Row row : rows) {
+                        CellCollection cells = row.getCells();
+                        for (Cell cell : cells) {
+                            CellFormat cellFormat = cell.getCellFormat();
+                            cellFormat.setFitText(false);
+                            cellFormat.setWrapText(true);
+                        }
+                    }
+                }
+                //FontSettings.setFontsFolder(fontsPath+File.separator, true);
+                // 存为PDF格式
+                doc.save(os, SaveFormat.PDF);
+                long now = System.currentTimeMillis();
+                os.close();
+                //outMessage(wordFilePath, PDFFile + ".pdf", now, old);
+                //outMessage(wordFilePath, wordFilePath.substring(0, wordFilePath.lastIndexOf(".")-1)  + ".pdf", now, old);
+            } catch (Exception e) {
+                System.out.println(wordFilePath + "转换失败，请重试");
+                e.printStackTrace();
+            }
+            return PDFFile + ".pdf";
+    }
+
 
     /**
      *  根据word路径创建同目录下的pdf文件
@@ -132,30 +172,51 @@ public class DocToPdf {
     }
 
     public static void main(String[] args) throws Exception {
-        String inFile = "/Users/qiush7engkeji/Desktop/project/ideaProject/test/test1/电力交易合同-浙江省模板文字录入0607的副本.docs";
-        String outFile = "/Users/qiush7engkeji/Desktop/project/ideaProject/test/替换.docx";
+        String inFile = "/Users/qiush7engkeji/Desktop/project/ideaProject/test/test1/字符填充模板doc/1.docx";
+        String outFile = "/Users/qiush7engkeji/Desktop/project/ideaProject/test/test1/字符填充模板doc/替换.doc";
         //transfer(inFile, outFile);
         //copyFile("/Users/qiush7engkeji/Desktop/project/ideaProject/test/read.pdf", outFile);
-        //docToPdf(inFile);
+        //docToPdf2(inFile);
         //setPDF(outFile);
         //readLineByBufferedReader(outFile);
 
-        /*Map<String, String> map = readFileToMap("替换内容存放文件.txt");
-        replaceWord(inFile,outFile,map);*/
+        Map<String, String> map = readFileToMap("替换内容存放文件.txt");
+        //replaceWord(inFile,outFile,map);
 
         //spireForTableOfDoc(inFile);
 
+        Placeholder placeholder2 = new Placeholder();
+        readModel(placeholder2);
     }
-    
-    //java中遍历实体类，获取属性名和属性值
-    public static Map<String,String> testReflect(Object model) throws Exception{
+
+    /**
+     * java中遍历实体类，获取属性名和属性值封装进map中
+     * @param model 传入的实体类对象 new Model()
+     * @return 返回封装后的map
+     */
+    public static Map<String,String> readModel(Object model){
         Map<String,String> hasMap = new HashMap<>();
+        BigDecimal bg = null;
         if (model == null){
             return null;
         }
-        for (Field field : model.getClass().getDeclaredFields()) {
-            field.setAccessible(true);
-            hasMap.put(field.getName(),(field.get(model).toString()));
+        try {
+            for (Field field : model.getClass().getDeclaredFields()) {
+                field.setAccessible(true);
+                // 可能出行类型转换异常 field.get(model).toString()
+                if (field.get(model) != null){
+                    if (field.get(model) instanceof Double){
+                        bg = new BigDecimal(String.valueOf(field.get(model)));
+                        System.out.println(field.getName()+"\t"+bg.toString());
+                        hasMap.put(field.getName(),(field.get(model).toString()));
+                    }else {
+                        System.out.println(field.getName()+"\t"+field.get(model).toString());
+                        hasMap.put(field.getName(),(field.get(model).toString()));
+                    }
+                }
+            }
+        }catch (IllegalAccessException i){
+            System.out.println("类型转换异常，请检查出入数据是否正确！");
         }
         return hasMap;
     }
@@ -264,25 +325,4 @@ public class DocToPdf {
         System.out.println("耗费时间：" + (System.currentTimeMillis() - start));
     }
 
-
-    /**
-     * file转MultipartFile
-     * @param file
-     * @return
-     */
-    /*public static MultipartFile getMultipartFile(File file) {
-        FileItem item = new DiskFileItemFactory().createItem("file"
-                , MediaType.MULTIPART_FORM_DATA_VALUE
-                , true
-                , file.getName());
-        try (InputStream input = new FileInputStream(file);
-             OutputStream os = item.getOutputStream()) {
-            // 流转移
-            IOUtils.copy(input, os);
-        } catch (Exception e) {
-            throw new IllegalArgumentException("Invalid file: " + e, e);
-        }
-
-        return new CommonsMultipartFile(item);
-    }*/
 }

@@ -7,8 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import static com.example.FileToPdf.DocToPdf.*;
-import static com.example.FileTransitionImg.Pdf2Img.tranfer;
-import static com.example.FileTransitionImg.Pdf2Img.tranfer2;
+import static com.example.FileTransitionImg.Pdf2Img.*;
 
 @RestController
 public class TestController {
@@ -31,14 +30,14 @@ public class TestController {
      * @return
      */
     @RequestMapping(value = "test2")
-    public String PDFtoJPN(){
+    public String PDFtoJPN(@RequestParam("file") MultipartFile file){
         String inPath = "/Users/qiush7engkeji/Desktop/project/ideaProject/test/副本报表SQL2.pdf";
         String pngPath = "/Users/qiush7engkeji/Desktop/project/ideaProject/test/imges/";
-        tranfer2(inPath, pngPath,10f);
-        // 10 共15张图片，需要时间（s）：27.692 清晰度较高
-        // 5  共15张图片，需要时间（s）：10.858 放大清晰度有损
-        // 20 共15张图片，需要时间（s）：91.506 可以达到wps效果，时间太慢
-        return "转换完成！";
+        //tranfer2(file, pngPath,5f);
+        long start = System.currentTimeMillis();
+        pdfToImageFile(file, pngPath, 180f);
+        long end = System.currentTimeMillis();
+        return "转换完成！" + (end-start) / 1000.0;
     }
 
     @RequestMapping(value = "/wordTopdf")

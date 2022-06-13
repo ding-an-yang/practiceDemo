@@ -1,8 +1,7 @@
-${FIRSTPARTY},甲方公司
-${SECONDPARTY},乙方公司
-${YEAR0},2022
-${MONTH0},06
-${DAY0},06
+${secondPartyCompany2},杭州求圣科技有限公司
+${secondEnterpriseLocation},浙江省杭州市滨江区长河街道施强广场10号楼7楼
+${secondMarketSupervisionAdministration},法定代表人
+${secondTaxRegistrationNo},12321531351134
 ${ENTERPRISEADDRESS},甲方地址
 ${MARKET},杭州电力监管
 ${TAXREGISTRATIONNO},66427334274474757

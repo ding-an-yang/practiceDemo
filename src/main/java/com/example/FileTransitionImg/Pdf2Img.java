@@ -3,32 +3,39 @@ package com.example.FileTransitionImg;
 import com.example.FileToPdf.DocToPdf;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.spire.pdf.PdfDocument;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPageTree;
+import org.apache.pdfbox.rendering.PDFRenderer;
 import org.icepdf.core.exceptions.PDFException;
 import org.icepdf.core.exceptions.PDFSecurityException;
 import org.icepdf.core.pobjects.Document;
 import org.icepdf.core.util.GraphicsRenderingHints;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageWriter;
 import javax.imageio.stream.ImageOutputStream;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
+import java.net.URL;
 import java.util.Iterator;
 
 
 public class Pdf2Img {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         String inPath = "/Users/qiush7engkeji/Desktop/project/ideaProject/test/副本报表SQL2.pdf";
         String pngPath = "/Users/qiush7engkeji/Desktop/project/ideaProject/test/imges/";
-        tranfer2(inPath, pngPath,20);
+        //tranfer2(inPath, pngPath,20);
 
         // 10 共15张图片，需要时间（s）：27.692 清晰度较高
         // 5  共15张图片，需要时间（s）：10.858 放大清晰度有损
         // 20 共15张图片，需要时间（s）：91.506 可以达到wps效果，时间太慢
+
+
     }
     /**
      * 将指定pdf文件的首页转换为指定路径的缩略图
@@ -39,7 +46,6 @@ public class Pdf2Img {
      */
     public static void tranfer(String filepath, String imagepath, float zoom) {
         Document document =  new Document();
-        DocToPdf docToPdf = new DocToPdf();
         float rotation = 0f;;
         try {
             /* 生成图片的名字*/
@@ -74,7 +80,7 @@ public class Pdf2Img {
         }
     }
 
-    public static void tranfer2(String filepath, String imagepath, float zoom) {
+    public static void tranfer2(MultipartFile file, String imagepath, float zoom) {
         Document document =  new Document();
         float rotation = 0f;;
         try {
@@ -82,8 +88,10 @@ public class Pdf2Img {
             /* 生成图片的名字*/
             //String imageName = UUID.randomUUID().toString();
             String imageName = "img";
+            InputStream inputStream = file.getInputStream();
+           // document.setInputStream(inputStream, "");
             // pdf文件设置
-            document.setFile(filepath);
+            document.setFile("/Users/qiush7engkeji/Desktop/project/ideaProject/test/电力交易合同-浙江省模板.pdf");
             // 读取pdf文件的页数
             int count = 0;
             for (int i = 0; i < document.getNumberOfPages(); i++) {
@@ -123,6 +131,48 @@ public class Pdf2Img {
             e.printStackTrace();
         } catch (InterruptedException e) {
             e.printStackTrace();
+        }
+    }
+
+    public static void pdfToImageFile(MultipartFile file, String imagePath, float dpi){
+        PDDocument doc = null;
+        ByteArrayOutputStream os = null;
+        InputStream stream = null;
+        OutputStream out = null;
+        try {
+            // 获取PDF上传流
+            stream = file.getInputStream();
+            // 加载解析PDF文件
+            doc = PDDocument.load(stream);
+            PDFRenderer pdfRenderer = new PDFRenderer(doc);
+            PDPageTree pages = doc.getPages();
+            int pageCount = pages.getCount();
+            for (int i = 0; i < pageCount; i++) {
+                BufferedImage bim = pdfRenderer.renderImageWithDPI(i, dpi);
+                os = new ByteArrayOutputStream();
+                ImageIO.write(bim, "jpg", os);
+                byte[] dataList = os.toByteArray();
+                // jpg文件转出路径
+                File iamgesFile = new File(imagePath + i + ".jpg");
+                if (!iamgesFile.getParentFile().exists()) {
+                    // 不存在则创建父目录及子文件
+                    iamgesFile.getParentFile().mkdirs();
+                    iamgesFile.createNewFile();
+                }
+                out = new FileOutputStream(iamgesFile);
+                out.write(dataList);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (doc != null) doc.close();
+                if (os != null) os.close();
+                if (stream != null) stream.close();
+                if (out != null) out.close();
+            } catch (IOException i){
+                i.printStackTrace();
+            }
         }
     }
 }
