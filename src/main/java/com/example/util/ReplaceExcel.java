@@ -44,7 +44,7 @@ public class ReplaceExcel {
                     for (int i = 0; i < num; i++) {
                         HSSFCell cell = row.getCell(i);
                         if (cell != null) {
-                            cell.setCellType(HSSFCell.CELL_TYPE_STRING);
+                            //cell.setCellType(HSSFCell.CELL_TYPE_STRING);
                         }
                         if (cell == null || cell.getStringCellValue() == null) {
                             continue;

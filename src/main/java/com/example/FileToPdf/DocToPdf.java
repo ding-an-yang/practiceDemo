@@ -4,9 +4,12 @@ import com.aspose.words.*;
 
 import com.example.model.Placeholder;
 import com.example.model.Placeholder2;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
+import sun.awt.OSInfo;
+import sun.plugin2.util.SystemUtil;
 
 import java.io.*;
 import java.lang.reflect.Field;
@@ -21,6 +24,7 @@ import java.util.*;
 
 import static com.example.FileToPdf.License.getWordLicense;
 import static com.example.util.ReadFileUtil.readFileToMap;
+import static com.example.util.ReplaceWord.replaceTable;
 import static com.example.util.ReplaceWord.replaceWord;
 
 /**
@@ -172,22 +176,28 @@ public class DocToPdf {
     }
 
     public static void main(String[] args) throws Exception {
-        String inFile = "/Users/qiush7engkeji/Desktop/project/ideaProject/test/test1/字符填充模板doc/1.docx";
-        String outFile = "/Users/qiush7engkeji/Desktop/project/ideaProject/test/test1/字符填充模板doc/替换.doc";
+        String inFile = "/Users/qiush7engkeji/Desktop/project/ideaProject/test/test1/字符填充模板doc/电力交易合同-浙江省模板.doc";
+        String outFile = "/Users/qiush7engkeji/Desktop/project/ideaProject/test/test1/字符填充模板doc/替换.docx";
         //transfer(inFile, outFile);
         //copyFile("/Users/qiush7engkeji/Desktop/project/ideaProject/test/read.pdf", outFile);
-        //docToPdf2(inFile);
+        docToPdf2(inFile);
         //setPDF(outFile);
         //readLineByBufferedReader(outFile);
 
         Map<String, String> map = readFileToMap("替换内容存放文件.txt");
-        //replaceWord(inFile,outFile,map);
+        replaceWord(inFile,outFile,map);
+        //replaceTable();
 
         //spireForTableOfDoc(inFile);
 
         Placeholder placeholder2 = new Placeholder();
-        readModel(placeholder2);
+        //readModel(placeholder2);
+
+
+
     }
+
+
 
     /**
      * java中遍历实体类，获取属性名和属性值封装进map中
