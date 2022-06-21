@@ -1,3 +1,5 @@
-# imgDemo
-asposes实现word/ppt/excel 转pdf  并实现pdf转图片
+# practiceDemo
+平时练习记录，一些工具存放
+字符串的处理：字符串拼接、查找
+文件处理：Word转PDF，占位符替换，文件复制等
 
