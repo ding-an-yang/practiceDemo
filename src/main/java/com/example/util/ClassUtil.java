@@ -2,6 +2,11 @@ package com.example.util;
 
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -45,4 +50,51 @@ public class ClassUtil {
         return hasMap;
     }
 
+
+    public static void main(String[] args) {
+        String s = addMonths(8);
+        s = getYyyyMM(s);
+        System.out.println(s);
+    }
+
+    /**
+     * 日期 加 的 操作
+     * @param num
+     * @return yyyy-MM-dd HH:mm:ss
+     */
+    public static String addMonths(int num){
+        Date curDate = new Date();// 获取当前日期
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(curDate);// 设置当前时间
+        calendar.add(Calendar.MONTH, num); // 当前时间加指定数量的月份
+        Date afterDate = calendar.getTime();// 获取加完月份后的日期
+        return getTime(afterDate);
+    }
+
+    /**
+     * 字符串日期格式化
+     * @param date
+     * @return
+     */
+    public static String getTime(Date date){
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        return format.format(date);
+    }
+
+    /**
+     * 获取 yyyyMM 日期格式
+     * @param time
+     * @return
+     */
+    public static String getYyyyMM(String time){
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        DateFormat simpleDateFormat = new SimpleDateFormat("yyyyMM");
+        try {
+            Date date = format.parse(time);
+            return simpleDateFormat.format(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

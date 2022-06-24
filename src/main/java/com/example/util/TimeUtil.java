@@ -1,5 +1,6 @@
 package com.example.util;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -36,5 +37,17 @@ public class TimeUtil {
         Date voucherDate = calendar.getTime();
         String format1 = dateFormat.format(voucherDate);
         return format1.substring(format1.length()-2, format1.length());
+    }
+
+    public static String getDay(String time){
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        DateFormat simpleDateFormat = new SimpleDateFormat("yyyyMM");
+        try {
+            Date date = format.parse(time);
+            return simpleDateFormat.format(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
