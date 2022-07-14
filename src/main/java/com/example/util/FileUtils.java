@@ -24,14 +24,21 @@ import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.icepdf.core.util.GraphicsRenderingHints;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
+import org.springframework.util.StringUtils;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageWriter;
 import javax.imageio.stream.ImageOutputStream;
+import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.nio.ByteBuffer;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
@@ -593,7 +600,6 @@ public class FileUtils {
     }
 
 
-
     /**
      * 将指定pdf文件的首页转换为指定路径的缩略图
      * @param filePath  原文件路径，例如d:/test.pdf
@@ -628,6 +634,121 @@ public class FileUtils {
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    public static boolean merge(String[] imgs, String type, String mergePic) {
+        int dstHeight = 0;
+        int dstWidth = 0;
+        // 获取需要拼接的图片长度
+        int len = imgs.length;
+        // 判断长度是否大于0
+        if (len < 1) {
+            return false;
+        }
+        File[] file = new File[len];
+        BufferedImage[] images = new BufferedImage[len];
+        int[][] ImageArrays = new int[len][];
+        for (int i = 0; i < len; i++) {
+            try {
+                file[i] = new File(imgs[i]);
+                images[i] = ImageIO.read(file[i]);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+
+            int width = images[i].getWidth();
+            int height = images[i].getHeight();
+
+            // 从图片中读取RGB 像素
+            ImageArrays[i] = new int[width * height];
+            ImageArrays[i] = images[i].getRGB(0, 0, width, height, ImageArrays[i], 0, width);
+
+            // 计算合并的宽度和高度
+            dstWidth = dstWidth > width ? dstWidth : width;
+            dstHeight += height;
+        }
+
+        // 合成图片像素
+        System.out.println("宽度:" + dstWidth);
+        System.out.println("高度:" + dstHeight);
+
+        if (dstHeight < 1) {
+            System.out.println("dstHeight < 1");
+            return false;
+        }
+        // 生成新图片
+        try {
+            BufferedImage imageNew = new BufferedImage(dstWidth, dstHeight, BufferedImage.TYPE_INT_RGB);
+            int width_i = 0;
+            int height_i = 0;
+            for (int i = 0; i < images.length; i++) {
+                int width = images[i].getWidth();
+                int height = images[i].getHeight();
+                imageNew.setRGB(0, height_i, width, height, ImageArrays[i], 0, width);
+                height_i += height;
+            }
+
+            File outFile = new File(mergePic);
+            // 写图片，输出到硬盘
+            ImageIO.write(imageNew, type, outFile);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+
+    /**文件下载
+     * 文件放入Response中
+     */
+    public static void exportFile(File file) {
+        try {
+            exportFile(file.getName(),new FileInputStream(file));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    /**
+     * 文件流放入Response中
+     */
+    public static void exportFile(String fileName,InputStream inputStream) {
+        if(StringUtils.isEmpty(fileName)) throw new RuntimeException("文件名称不能为空！");
+        if(inputStream == null) throw new RuntimeException("导出文件流不能为空！");
+        try {
+            //1、获取扩展名
+            String ext = fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length()).toLowerCase();
+            ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+            HttpServletResponse response = attributes.getResponse();
+            response.setCharacterEncoding("utf-8");
+            String name = URLEncoder.encode(StringUtils.isEmpty(fileName)?fileName:fileName.substring(0,fileName.length()-ext.length()-1), "utf-8");
+            response.setHeader("filename", name);
+            response.setHeader("Access-Control-Expose-Headers", "filename");
+
+            response.resetBuffer();
+            response.setContentType("utf-8");
+            response.setHeader("content-disposition", "attachment; filename=" + new String(fileName.getBytes("utf-8"),"ISO8859-1"));
+            String mimeType = "application/pdf";
+            if(StringUtils.isEmpty(mimeType)) {
+                response.setContentType("applicationnd.openxmlformats-officedocument.spreadsheetml.sheet");
+            } else {
+                response.setContentType(mimeType);
+            }
+            BufferedInputStream bis = new BufferedInputStream(inputStream);
+            BufferedOutputStream bos = new BufferedOutputStream(response.getOutputStream());
+            byte[] buff = new byte[2048];
+            int bytesRead;
+            while (-1 != (bytesRead = bis.read(buff, 0, buff.length))) {
+                bos.write(buff, 0, bytesRead);
+            }
+            bis.close();
+            bos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

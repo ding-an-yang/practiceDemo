@@ -1,14 +1,13 @@
 package com.example.util;
 
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
+import java.net.URLDecoder;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author ：yangan
@@ -17,7 +16,7 @@ import java.util.Map;
  * @version: 1.0
  */
 public class ClassUtil {
-
+    public static int count = 1;
     /**
      * java中遍历实体类，获取属性名和属性值封装进map中
      * @param model 传入的实体类对象 new Model()
@@ -52,9 +51,26 @@ public class ClassUtil {
 
 
     public static void main(String[] args) {
-        String s = addMonths(8);
-        s = getYyyyMM(s);
-        System.out.println(s);
+        String strCount = String.format("%4d", 11111).replace(" ", "0");//5代表总共是几位数
+        System.out.println(strCount);
+    }
+
+    /**
+     * 获取当前系统月 MM
+     * @return
+     */
+    public static String getMonth(){
+        DateFormat format = new SimpleDateFormat("MM");
+        return format.format(new Date());
+    }
+
+    /**
+     * 获取当前系统天 dd
+     * @return
+     */
+    public static String getDay(){
+        DateFormat format = new SimpleDateFormat("dd");
+        return format.format(new Date());
     }
 
     /**

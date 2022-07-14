@@ -1,9 +1,10 @@
 package com.example.controller;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import com.aliyun.ocr_api20210707.models.RecognizeBusinessLicenseResponse;
+import com.aliyun.ocr_api20210707.models.RecognizeBusinessLicenseResponseBody;
+import com.example.service.Sample;
+import com.example.util.FileUtils;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -42,6 +43,25 @@ public class PdfController {
             response.setHeader("filename", fileName);
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    /**
+     * 文件下载
+     */
+    @PostMapping(value = "/getConfirmLetter")
+    public void getConfirmLetter() {
+        InputStream inputStream = this.getClass().getResourceAsStream("/template/附件2.pdf");
+        String fileName = "确认邀请函.pdf";
+        FileUtils.exportFile(fileName, inputStream);
+    }
+
+    @PostMapping(value = "/ocr")
+    public RecognizeBusinessLicenseResponseBody testOcr() {
+        try {
+            return Sample.testOcr();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 }

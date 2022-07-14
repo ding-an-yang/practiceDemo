@@ -5,6 +5,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+
 import static com.example.util.FileUtils.docToPdf;
 import static com.example.util.FileUtils.pdfToImageFile;
 
@@ -17,8 +21,8 @@ public class TestController {
      */
     @RequestMapping(value = "test2")
     public String PDFtoJPN(@RequestParam("file") MultipartFile file){
-        String inPath = "/Users/qiush7engkeji/Desktop/project/ideaProject/test/副本报表SQL2.pdf";
-        String pngPath = "/Users/qiush7engkeji/Desktop/project/ideaProject/test/imges/";
+        String inPath = "/Users/qiush7engkeji/Desktop/工作记录/电网/附件2.pdf";
+        String pngPath = "/Users/qiush7engkeji/Desktop/工作记录/电网/";
         //tranfer2(file, pngPath,5f);
         long start = System.currentTimeMillis();
         pdfToImageFile(file, pngPath, 180f);
@@ -33,6 +37,23 @@ public class TestController {
         //transfer(inFile, outFile);
         //copyFile("/Users/qiush7engkeji/Desktop/project/ideaProject/test/read.pdf", outFile);
         docToPdf(files);
+        function2();
         return "";
+    }
+
+    /**
+     * 直接通过文件名getPath来获取路径
+     * @throws IOException
+     */
+    public void function2(){
+        String path = this.getClass().getClassLoader().getResource("template/附件2.doc").getPath();
+        System.out.println(path);
+        String filePath = null;//如果路径中带有中文会被URLEncoder,因此这里需要解码
+        try {
+            filePath = URLDecoder.decode(path, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
+        System.out.println(filePath);
     }
 }
