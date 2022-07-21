@@ -216,6 +216,19 @@
             <version>1.1.7</version>
         </dependency>
 
+        <dependency>
+            <!-- JSONQuery @ https://JSONQuery.kagura.me -->
+            <groupId>me.kagura</groupId>
+            <artifactId>JSONQuery</artifactId>
+            <version>0.2.6</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.5.13</version>
+        </dependency>
+
     </dependencies>
 
     <build>

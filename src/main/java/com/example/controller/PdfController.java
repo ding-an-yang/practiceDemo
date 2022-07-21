@@ -1,9 +1,10 @@
 package com.example.controller;
 
-import com.aliyun.ocr_api20210707.models.RecognizeBusinessLicenseResponse;
 import com.aliyun.ocr_api20210707.models.RecognizeBusinessLicenseResponseBody;
-import com.example.service.Sample;
+import com.example.component.AliOCRClinent;
 import com.example.util.FileUtils;
+import net.sourceforge.tess4j.Tesseract;
+import net.sourceforge.tess4j.TesseractException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -59,9 +60,11 @@ public class PdfController {
     @PostMapping(value = "/ocr")
     public RecognizeBusinessLicenseResponseBody testOcr() {
         try {
-            return Sample.testOcr();
+            return AliOCRClinent.testOcr();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
+
+
 }
