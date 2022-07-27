@@ -3,8 +3,6 @@ package com.example.controller;
 import com.aliyun.ocr_api20210707.models.RecognizeBusinessLicenseResponseBody;
 import com.example.component.AliOCRClinent;
 import com.example.util.FileUtils;
-import net.sourceforge.tess4j.Tesseract;
-import net.sourceforge.tess4j.TesseractException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 

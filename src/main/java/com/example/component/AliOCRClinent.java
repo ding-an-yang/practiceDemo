@@ -47,11 +47,9 @@ public class AliOCRClinent {
     }
 
     public static RecognizeBusinessLicenseResponseBody testOcr() throws FileNotFoundException {
-        //Client client = AliOCRClinent.createClient("LTAI5tGyE7YecGQL55rCyPvj", "1d7HWXN6wSOyJY3b6KtWEfAVyRTDUd");
         Client client = AliOCRClinent.createClient("", "");
-        //InputStream bodySyream = com.aliyun.darabonba.stream.Client.readFromFilePath("<your-file-path>");
-        InputStream inputStream = new FileInputStream(new File("https://s4s-images.oss-cn-shanghai.aliyuncs.com/electricity/img/eeed453c6c27452384a52cbac4e9b063.jpg"));
-//        InputStream inputStream2 = new InputStream();
+        //InputStream bodySyream = com.aliyun.darabonba.stream.Client.readFromFilePath("<your-file-path>");/
+        InputStream inputStream = new FileInputStream("/Users/qiush7engkeji/Desktop/3971657591688.png");
         RecognizeBusinessLicenseRequest recognizeBusinessLicenseRequest = new RecognizeBusinessLicenseRequest()
                 .setBody(inputStream);
         RuntimeOptions runtime = new RuntimeOptions();
@@ -67,10 +65,7 @@ public class AliOCRClinent {
             JsonResult legalPerson = JSONQuery.select(data, "data > legalPerson");
             System.out.println("legalPerson:"+legalPerson);
             JsonResult businessAddress = JSONQuery.select(data, "data > businessAddress");
-            Students s = new Students();
-            s.setCompanyName(companyName.toString());
             System.out.println("businessAddress:"+businessAddress);
-            System.out.println(s.getCompanyName());
 
             return body;
         } catch (TeaException error) {

@@ -9,8 +9,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 
-import static com.example.util.FileUtils.docToPdf;
-import static com.example.util.FileUtils.pdfToImageFile;
+import static com.example.util.FileUtils.*;
 
 @RestController
 public class TestController {
@@ -22,12 +21,16 @@ public class TestController {
     @RequestMapping(value = "test2")
     public String PDFtoJPN(@RequestParam("file") MultipartFile file){
         String inPath = "/Users/qiush7engkeji/Desktop/工作记录/电网/附件2.pdf";
-        String pngPath = "/Users/qiush7engkeji/Desktop/工作记录/电网/";
+        String pngPath = "/Users/qiush7engkeji/Desktop/工作记录/电网/img/";
         //tranfer2(file, pngPath,5f);
+//        String filePath = "/Users/qiush7engkeji/Desktop/工作记录/电网/常见问题(2).pdf";
+//        String imagePath = "/Users/qiush7engkeji/Desktop/工作记录/电网/img/";
+//        pdfToImagesFile(filePath, imagePath, 90);
         long start = System.currentTimeMillis();
         pdfToImageFile(file, pngPath, 180f);
         long end = System.currentTimeMillis();
         return "转换完成！" + (end-start) / 1000.0;
+//        return null;
     }
 
     @RequestMapping(value = "/wordTopdf")

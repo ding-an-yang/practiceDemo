@@ -1,2 +1,9 @@
 server:
   port: 9090
+#配置rabbitmq
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: guset
+    password: guset
+    virtual-host: my_vhost
