@@ -9,7 +9,9 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.InputStream;
+import java.util.List;
 
+import static com.example.service.BackQueryService.backQuery;
 import static com.example.util.FileUtils.docToPdf;
 
 
@@ -64,5 +66,10 @@ public class PdfController {
         }
     }
 
+    @PostMapping("/backQuery/{keywords}")
+    public List<String> backQueryTest(@PathVariable String keywords){// @PathVariable String keywords
+//        String keywords = "杭州";
+        return backQuery(keywords);
+    }
 
 }

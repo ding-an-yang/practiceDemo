@@ -43,6 +43,7 @@ import java.nio.ByteBuffer;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.*;
@@ -582,7 +583,7 @@ public class FileUtils {
                     iamgesFile.getParentFile().mkdirs();
                     iamgesFile.createNewFile();
                 }
-                out = new FileOutputStream(iamgesFile);
+                out = Files.newOutputStream(iamgesFile.toPath());
                 out.write(dataList);
             }
         } catch (Exception e) {

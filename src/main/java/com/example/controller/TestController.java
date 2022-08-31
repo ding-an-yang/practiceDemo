@@ -1,24 +1,25 @@
 package com.example.controller;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import com.example.service.BackQueryService;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.util.List;
 
 import static com.example.util.FileUtils.*;
 
 @RestController
+@RequestMapping("/test")
 public class TestController {
 
     /**
      * pdf转图片 png jpg 格式
      * @return
      */
-    @RequestMapping(value = "test2")
+    @PostMapping(value = "test2")
     public String PDFtoJPN(@RequestParam("file") MultipartFile file){
         String inPath = "/Users/qiush7engkeji/Desktop/工作记录/电网/附件2.pdf";
         String pngPath = "/Users/qiush7engkeji/Desktop/工作记录/电网/img/";
@@ -33,7 +34,7 @@ public class TestController {
 //        return null;
     }
 
-    @RequestMapping(value = "/wordTopdf")
+    @PostMapping(value = "/wordTopdf")
     public String wordToPdf(@RequestParam("files") MultipartFile[] files){
         String inFile = "/Users/qiush7engkeji/Desktop/project/ideaProject/test/test1/2.docx";
         String outFile = "/Users/qiush7engkeji/Desktop/project/ideaProject/test/替换.docx";

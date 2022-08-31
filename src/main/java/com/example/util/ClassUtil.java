@@ -49,12 +49,6 @@ public class ClassUtil {
         return hasMap;
     }
 
-
-    public static void main(String[] args) {
-        String strCount = String.format("%4d", 11111).replace(" ", "0");//5代表总共是几位数
-        System.out.println(strCount);
-    }
-
     /**
      * 获取当前系统月 MM
      * @return

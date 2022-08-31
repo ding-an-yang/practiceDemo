@@ -13,8 +13,8 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
-import com.sun.deploy.net.HttpResponse;
 import org.apache.commons.lang.StringUtils;
+import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -55,7 +55,7 @@ public class HttpUtils {
             request.addHeader(e.getKey(), e.getValue());
         }
 
-        return (HttpResponse) httpClient.execute(request);
+        return httpClient.execute(request);
     }
 
     /**
@@ -93,7 +93,7 @@ public class HttpUtils {
             request.setEntity(formEntity);
         }
 
-        return (HttpResponse) httpClient.execute(request);
+        return httpClient.execute(request);
     }
 
     /**
@@ -124,7 +124,7 @@ public class HttpUtils {
             request.setEntity(new StringEntity(body, "utf-8"));
         }
 
-        return (HttpResponse) httpClient.execute(request);
+        return httpClient.execute(request);
     }
 
     /**
@@ -155,7 +155,7 @@ public class HttpUtils {
             request.setEntity(new ByteArrayEntity(body));
         }
 
-        return (HttpResponse) httpClient.execute(request);
+        return httpClient.execute(request);
     }
 
     /**
@@ -185,7 +185,7 @@ public class HttpUtils {
             request.setEntity(new StringEntity(body, "utf-8"));
         }
 
-        return (HttpResponse) httpClient.execute(request);
+        return httpClient.execute(request);
     }
 
     /**
@@ -215,7 +215,7 @@ public class HttpUtils {
             request.setEntity(new ByteArrayEntity(body));
         }
 
-        return (HttpResponse) httpClient.execute(request);
+        return httpClient.execute(request);
     }
 
     /**
@@ -240,7 +240,7 @@ public class HttpUtils {
             request.addHeader(e.getKey(), e.getValue());
         }
 
-        return (HttpResponse) httpClient.execute(request);
+        return httpClient.execute(request);
     }
 
     private static String buildUrl(String host, String path, Map<String, String> querys) throws UnsupportedEncodingException {
@@ -302,7 +302,7 @@ public class HttpUtils {
             ssf.setHostnameVerifier(SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
             ClientConnectionManager ccm = httpClient.getConnectionManager();
             SchemeRegistry registry = ccm.getSchemeRegistry();
-//            registry.register(new Scheme("https", 443, ssf));
+            registry.register(new Scheme("https", 443, ssf));
         } catch (KeyManagementException ex) {
             throw new RuntimeException(ex);
         } catch (NoSuchAlgorithmException ex) {
