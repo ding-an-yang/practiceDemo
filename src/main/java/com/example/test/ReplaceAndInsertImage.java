@@ -1,16 +1,18 @@
 package com.example.test;
 
 import com.aspose.words.*;
+import com.example.model.Placeholder;
 
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import java.util.regex.Pattern;
 
+import static com.example.util.FileUtils.copyFileByBuffer;
 import static com.example.util.License.getLicense;
 import static com.example.util.License.getLicense2;
 
@@ -47,9 +49,11 @@ public class ReplaceAndInsertImage implements IReplacingCallback {
      * @return
      */
     public static boolean replace(String url,String saveurl,Map<String, String> params){
-        if(!getLicense2()){
+        if(!getLicense()){
             return false;
         }
+        //getLicense2();
+//        getLicense();
         File file = new File(url);
         if(!file.exists()){
             return false;
@@ -85,9 +89,8 @@ public class ReplaceAndInsertImage implements IReplacingCallback {
         return true;
     }
     public static void main(String[] args) {
-        Map<String, String> params = new HashMap<String, String>();
-        params.put("[$pic$]", "$pic:https://s4s-images.oss-cn-shanghai.aliyuncs.com/electricity/img/df7ba48520564ac58679c1921bd0e1bc.png");
-//        replace("/Users/qiush7engkeji/Desktop/", "D:/test/aspose替换后.docx", params);
-        replace("/Users/qiush7engkeji/Desktop/峰谷价附件2的副本.doc", "/Users/qiush7engkeji/Desktop/替换后.doc", params);
+        DateFormat format = new SimpleDateFormat("dd");
+        String format1 = format.format(new Date());
+        System.out.println(Integer.parseInt(format1));
     }
 }

@@ -14,7 +14,7 @@ import java.util.List;
 public class Placeholder {
     private String NAME = "1000.78";
     private String test;
-    private String name1 = "10000.78";
+    private String name1;
     private String name2 = "100000.78";
     private Long name3 = 1000000l;
     private Double name4 = 10000000.78d;

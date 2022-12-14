@@ -280,12 +280,14 @@ public class FileUtils {
             ByteBuffer buf = ByteBuffer.allocate(1024);
             //将通道中的数据存入缓冲区
             while (inChannel.read(buf) != -1) {
-                //切换到读取数据模式
-                buf.flip();
-                //将缓冲区的数据写入通道中
-                outChannel.write(buf);
-                //清空缓冲区
-                buf.clear();
+                if (inChannel.read(buf) != 1){
+                    //切换到读取数据模式
+                    buf.flip();
+                    //将缓冲区的数据写入通道中
+                    outChannel.write(buf);
+                    //清空缓冲区
+                    buf.clear();
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
