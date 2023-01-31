@@ -17,8 +17,8 @@ public class Placeholder {
     private String name1;
     private String name2 = "100000.78";
     private Long name3 = 1000000l;
-    private Double name4 = 10000000.78d;
-    private Double name5 = 100000000.78;
+    private Double name4 = 100.78d;
+    private Double name5 = 100.78;
     private Integer a = 1334;
     private List<String> list;
     private Placeholder2 placeholder2;
