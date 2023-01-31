@@ -16,7 +16,7 @@ public class Placeholder {
     private String test;
     private String name1;
     private String name2 = "100000.78";
-    private Long name3 = 1000000l;
+    private Long name3 = 100000l;
     private Double name4 = 100.78d;
     private Double name5 = 100.78;
     private Integer a = 1334;
