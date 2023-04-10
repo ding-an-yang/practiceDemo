@@ -1,13 +1,14 @@
 package com.example.controller;
 
-import com.example.service.BackQueryService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
 import java.net.URLDecoder;
-import java.util.List;
+import java.net.URLEncoder;
 
 import static com.example.util.FileUtils.*;
 
@@ -43,6 +44,59 @@ public class TestController {
         docToPdf(files);
         function2();
         return "";
+    }
+
+    @ApiOperation("下载模板")
+    @GetMapping(value = "/downloadModel")
+    public String downModel(HttpServletResponse response, HttpServletRequest request){
+        // 读取文件流
+        //InputStream is = this.getClass().getClassLoader().getResourceAsStream("/template/product.xlsx");
+        // 获取文件的路径
+        String path = this.getClass().getClassLoader().getResource("template/product.xlsx").getPath();
+        //设置文件路径
+        File file = new File(path);
+        //获取文件名称
+        String fileName = "product模板-2023.03.17" + ".xlsx";
+        //判断文件是否存在
+        if (file.exists()) {
+            byte[] buffer = new byte[1024];
+            FileInputStream fis = null;
+            BufferedInputStream bis = null;
+            response.setContentType("application/vnd.ms-excel");
+            try {
+                response.addHeader("Content-Disposition", "attachment;fileName=" + URLEncoder.encode(fileName, "utf8"));// 设置文件名
+                fis = new FileInputStream(file);
+                bis = new BufferedInputStream(fis);
+                OutputStream os = response.getOutputStream();
+                int i = bis.read(buffer);
+                while (i != -1) {
+                    os.write(buffer, 0, i);
+                    i = bis.read(buffer);
+                }
+                //file.delete();
+            } catch (Exception e) {
+                e.printStackTrace();
+                return "下载失败";
+            } finally {
+                if (bis != null) {
+                    try {
+                        bis.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                if (fis != null) {
+                    try {
+                        fis.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }else {
+            return "模板不存在";
+        }
+        return "模板下载完成";
     }
 
     /**

@@ -62,16 +62,8 @@ public class EncryptUtil {
 
     // 测试加密与解密
     public static void main(String[] args) {
-        try {
-            String secretKey = "aaaabbbbccccdddd";
-            String content = "1234444";
-            String s1 = aesEncrypt(content, secretKey);
-            System.out.println(s1);
-            String s = aesDecrypt(s1, secretKey);
-            System.out.println(s);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        Short a = 1233;
+        System.out.println(a);
     }
 
     /**

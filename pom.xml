@@ -230,11 +230,11 @@
         </dependency>
 
         <!--icepdf，用来将pdf文件转换为图片的依赖-->
-        <dependency>
-            <groupId>org.icepdf.os</groupId>
-            <artifactId>icepdf-core</artifactId>
-            <version>6.2.2</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.icepdf.os</groupId>-->
+<!--            <artifactId>icepdf-core</artifactId>-->
+<!--            <version>6.2.2</version>-->
+<!--        </dependency>-->
 
         <!--thumbnailator，用来压缩图片的依赖-->
         <dependency>
@@ -260,6 +260,12 @@
             <artifactId>testng</artifactId>
             <version>RELEASE</version>
             <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.tobato</groupId>
+            <artifactId>fastdfs-client</artifactId>
+            <version>1.26.6</version>
         </dependency>
 
     </dependencies>
