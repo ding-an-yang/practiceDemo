@@ -47,4 +47,7 @@ public class OCRTest {
         return count >0 ? total / count : 0;
     }
 
+
+
+
 }
