@@ -1,17 +1,16 @@
 package com.example.test;
 
+import javax.annotation.PostConstruct;
 import java.awt.geom.Point2D;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.DoubleStream;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.time.LocalTime;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class OCRTest {
 
     public static void main(String[] args) {
-
         List<Integer> ints = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8);
         double average = calc(ints);
         double streamResult = ints.stream()
@@ -20,11 +19,15 @@ public class OCRTest {
                 .mapToDouble(point -> point.distance(0, 0))
                 .average()
                 .orElse(0);
-
+        int value1 = 2;
+        int value2 = 2;
+        System.out.println(value1 == value2);
 
     }
 
     private static double calc(List<Integer> ints) {
+        AtomicInteger atomicInteger = new AtomicInteger();
+        atomicInteger.get();
         //临时中间集合
         List<Point2D> point2DList = new ArrayList<>();
         for (Integer i : ints) {
@@ -44,8 +47,14 @@ public class OCRTest {
             }
         }
         //注意count可能为0的可能
-        return count >0 ? total / count : 0;
+        return count > 0 ? total / count : 0;
     }
+
+
+class Test {
+        volatile String key = "1234";
+}
+
 
 
 
