@@ -11,17 +11,23 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class OCRTest {
 
     public static void main(String[] args) {
-        List<Integer> ints = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8);
-        double average = calc(ints);
-        double streamResult = ints.stream()
-                .map(i -> new Point2D.Double((double) i % 3, (double) i / 3))
-                .filter(point -> point.getY() > 1)
-                .mapToDouble(point -> point.distance(0, 0))
-                .average()
-                .orElse(0);
-        int value1 = 2;
-        int value2 = 2;
-        System.out.println(value1 == value2);
+        // 定义需要排序的数组
+        int[] arr = {5, 3, 8, 2, 7, 1, 4, 6};
+        // 输出原始数组
+        System.out.println("原始数组：" + Arrays.toString(arr));
+        // 冒泡排序
+        for (int i = 0; i < arr.length - 1; i++) {
+            for (int j = 0; j < arr.length - i - 1; j++) {
+                if (arr[j] > arr[j + 1]) {
+                    // 交换相邻的元素
+                    int temp = arr[j];
+                    arr[j] = arr[j + 1];
+                    arr[j + 1] = temp;
+                }
+            }
+        }
+        // 输出排序后的数组
+        System.out.println("排序后的数组：" + Arrays.toString(arr));
 
     }
 
@@ -49,14 +55,5 @@ public class OCRTest {
         //注意count可能为0的可能
         return count > 0 ? total / count : 0;
     }
-
-
-class Test {
-        volatile String key = "1234";
-}
-
-
-
-
 
 }
