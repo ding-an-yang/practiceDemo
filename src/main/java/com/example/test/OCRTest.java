@@ -26,6 +26,7 @@ public class OCRTest {
                 }
             }
         }
+        Set<String> set = new HashSet<>();
         // 输出排序后的数组
         System.out.println("排序后的数组：" + Arrays.toString(arr));
 

@@ -22,4 +22,5 @@ public class Placeholder {
     private Integer a = 1334;
     private List<String> list;
     private Placeholder2 placeholder2;
+    private Students students;
 }
