@@ -3,10 +3,9 @@ package com.example.test;
 import com.aspose.words.*;
 import com.example.model.Placeholder;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -89,8 +88,31 @@ public class ReplaceAndInsertImage implements IReplacingCallback {
         return true;
     }
     public static void main(String[] args) {
-        DateFormat format = new SimpleDateFormat("dd");
-        String format1 = format.format(new Date());
-        System.out.println(Integer.parseInt(format1));
+        char[] array = {'a', 'd', 'e', 'f', 'h'};
+        char target = 'b';
+        char c = binarySearch(array, target);
+        System.out.println(c);
+    }
+
+    /**
+     * 第一题，在一个排序后的非递减字符数列中，找出比目标字符大的最小字符，字符大小循环，比'z'大的最小是'a'。
+     * @param chars
+     * @param target
+     * @return
+     */
+    public static char binarySearch(char[] chars, char target) {
+        int left = 0;
+        int right = chars.length - 1;
+        char ans = 'a';
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            if (chars[mid] > target) {
+                ans = chars[mid];
+                right = mid - 1;
+            } else {
+                left = mid + 1;
+            }
+        }
+        return ans;
     }
 }
