@@ -115,4 +115,42 @@ public class ReplaceAndInsertImage implements IReplacingCallback {
         }
         return ans;
     }
+
+    /**
+     * 第二题。一个字符串由整数和加减乘除四种运算符号构成，中间有空格，问计算结果。
+     * @param expression
+     * @return
+     */
+    public static int calculateExpression(String expression) {
+        expression = expression.replaceAll(" ", "");
+        String[] parts = expression.split("(?=[-+*/])|(?<=[-+*/])");
+        Stack<Integer> stack = new Stack<>();
+        char operator = '+';
+        for (String part : parts) {
+            if (part.matches("\\d+")) {
+                int num = Integer.parseInt(part);
+                switch (operator) {
+                    case '+':
+                        stack.push(num);
+                        break;
+                    case '-':
+                        stack.push(-num);
+                        break;
+                    case '*':
+                        stack.push(stack.pop() * num);
+                        break;
+                    case '/':
+                        stack.push(stack.pop() / num);
+                        break;
+                }
+            } else {
+                operator = part.charAt(0);
+            }
+        }
+        int sum = 0;
+        while (!stack.empty()) {
+            sum += stack.pop();
+        }
+        return sum;
+    }
 }

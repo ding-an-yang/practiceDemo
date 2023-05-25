@@ -126,12 +126,6 @@
 
         <dependency>
             <groupId>e-iceblue</groupId>
-            <artifactId>spire.doc</artifactId>
-            <version>4.11.3</version>
-        </dependency>
-
-        <dependency>
-            <groupId>e-iceblue</groupId>
             <artifactId>spire.doc.free</artifactId>
             <version>3.9.0</version>
         </dependency>
