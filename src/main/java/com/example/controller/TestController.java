@@ -1,5 +1,6 @@
 package com.example.controller;
 
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StopWatch;
@@ -25,6 +26,7 @@ import static com.example.util.FileUtils.*;
 @Slf4j
 @RestController
 @RequestMapping("/test")
+@Api(value = "用户操作接口", tags = "UserApi", description = "用户操作相关接口")
 public class TestController {
     @ApiOperation("下载模板")
     @GetMapping(value = "/downloadModel")
@@ -87,6 +89,7 @@ public class TestController {
      * @param userId 用户id
      * @return
      */
+    @ApiOperation("ThreadLocal测试")
     @GetMapping("wrong")
     public Map<String, String> wrong(@RequestParam("userId") Integer userId) {
         //设置用户信息之前先查询一次ThreadLocal中的用户信息

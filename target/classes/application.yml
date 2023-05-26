@@ -7,5 +7,3 @@ server:
     username: guset
     password: guset
     virtual-host: my_vhost
-  tomcat:
-    max-threads: 1

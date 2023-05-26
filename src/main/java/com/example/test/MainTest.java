@@ -32,6 +32,7 @@ public class MainTest {
 //        createWordExcel(header0, header1, header2, data);
         List<Object> dataList = new ArrayList<>();
         String fileName = "生成文件.docx";
+
         Students student1 = new Students();
         student1.setStu_id("123");
         student1.setData("20000fan");
@@ -55,6 +56,7 @@ public class MainTest {
         dataList.add(student3);
 
         createWord(fileName, dataList);
+
     }
 
 }
