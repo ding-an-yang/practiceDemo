@@ -19,7 +19,6 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
      */
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-//        "classpath:/META-INF/resources/", "classpath:/resources/", "classpath:/static/", "classpath:/public/"
         //重写这个方法，映射静态资源文件
         registry.addResourceHandler("/**")
                 .addResourceLocations("classpath:/resources/")
