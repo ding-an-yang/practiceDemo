@@ -6,20 +6,17 @@ import com.spire.doc.documents.TableRowHeightType;
 import com.spire.doc.documents.VerticalAlignment;
 import com.spire.doc.fields.TextRange;
 
-import org.apache.poi.ss.formula.functions.T;
+import org.apache.poi.util.IOUtils;
+import org.apache.poi.util.Units;
 import org.apache.poi.xwpf.model.XWPFHeaderFooterPolicy;
 import org.apache.poi.xwpf.usermodel.*;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.*;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.lang.reflect.Field;
 import java.math.BigInteger;
 
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -129,6 +126,10 @@ public class ExcelUtils {
 
         // 文档中写入内容
 //        writeWordText(document, text, textColor, textFontSize);
+
+        String picturePath = "/Users/qiush7engkeji/Desktop/WorkRecords/电网/img/罚单.jpg";
+        // 插入图片
+        writeWordPicture(document, picturePath);
 
         //换行
         wrap(document, 2);
@@ -258,6 +259,22 @@ public class ExcelUtils {
 //        CTShd cTShd = xwpfRun.getCTR().addNewRPr().addNewShd();
 //        cTShd.setVal(STShd.CLEAR);
 //        cTShd.setFill("97FFFF");
+    }
+
+    public static void writeWordPicture(XWPFDocument xwpfDocument, String picturePath){
+        File imageFile = new File(picturePath);
+        FileInputStream fis = null;
+        XWPFParagraph paragraph = xwpfDocument.createParagraph();
+        XWPFRun run = paragraph.createRun();
+        try {
+            fis = new FileInputStream(imageFile);
+            byte[] imageData = IOUtils.toByteArray(fis);
+            xwpfDocument.addPictureData(imageData, XWPFDocument.PICTURE_TYPE_JPEG);
+            run.addPicture(fis, XWPFDocument.PICTURE_TYPE_JPEG, "罚单.jpg", Units.toEMU(100), Units.toEMU(100));
+            fis.close();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
