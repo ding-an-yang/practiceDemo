@@ -102,9 +102,7 @@ public class FileUtils {
                         String value = cell.getStringCellValue();
                         if (!"".equals(value)) {
                             Set<String> keySet = item.keySet();
-                            Iterator<String> it = keySet.iterator();
-                            while (it.hasNext()) {
-                                String text = it.next();
+                            for (String text : keySet) {
                                 if (value.equalsIgnoreCase(text)) {
                                     cell.setCellValue((String) item.get(text));
                                     break;
