@@ -281,6 +281,23 @@
             <version>3.5.3.1</version>
         </dependency>
 
+        <!-- JSON格式数据查询引进 -->
+        <dependency>
+            <!-- JSONQuery @ https://JSONQuery.kagura.me -->
+            <groupId>me.kagura</groupId>
+            <artifactId>JSONQuery</artifactId>
+            <version>0.2.6</version>
+        </dependency>
+
+
+        <!-- https://mvnrepository.com/artifact/com.alibaba/fastjson -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.75</version>
+        </dependency>
+
+
     </dependencies>
 
     <build>
