@@ -1,18 +1,8 @@
 package com.example.util;
 
-import com.alibaba.fastjson.JSON;
-import com.example.dto.DriveExamQuestionsDTO;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.commons.lang.StringEscapeUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.ResourceLoader;
-import springfox.documentation.spring.web.json.Json;
+import com.alibaba.fastjson.*;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 
 /**
  * @author ：yangan
@@ -21,9 +11,15 @@ import java.io.InputStreamReader;
  * @version:
  */
 public class JSONUtil {
-    static void readWithClassLoader() throws IOException {
+
+    /**
+     * 读取当前项目中的文件
+     *
+     * @throws IOException
+     */
+    public static void readWithClassLoader() throws IOException {
         String fileName = "our-20230720.json";
-        ClassLoader  classLoader =  JSONUtil.class.getClassLoader();
+        ClassLoader classLoader = JSONUtil.class.getClassLoader();
         BufferedReader reader = null;
         InputStream inputStream = classLoader.getResourceAsStream(fileName);
         reader = new BufferedReader(new InputStreamReader(inputStream));
@@ -36,7 +32,7 @@ public class JSONUtil {
 //                    System.out.println("站位符");
 //                }
 //            }
-            if (line.contains("Explain:")){
+            if (line.contains("Explain:")) {
                 System.out.println(line.substring(8));
             }
             content.append(line);
@@ -44,16 +40,71 @@ public class JSONUtil {
             i++;
         }
         System.out.println(i);
-//        return content.toString();
     }
 
-
-    public static void main(String[] args) throws IOException {
-        //String s = StringEscapeUtils.unescapeJava(readWithClassLoader());
-//        DriveExamQuestionsDTO driveExamQuestionsDTO = JSON.parseObject(readWithClassLoader(), DriveExamQuestionsDTO.class);
-//        System.out.println(driveExamQuestionsDTO);
-        readWithClassLoader();
-//        System.out.println(readWithClassLoader());
+    /**
+     * 读取解析JSON文件
+     */
+    public static void explainJsonFile() {
+        File file = new File("/Users/qiush7engkeji/Desktop/myGithub/java/practiceDemo/src/main/resources/our-20230720.json");
+        FileInputStream fis = null;
+        try {
+            fis = new FileInputStream(file);
+            InputStreamReader isr = new InputStreamReader(fis, "UTF-8");
+            JSONReader reader = new JSONReader(isr);
+            // 读取JSON文件
+            Object object = reader.readObject();
+            // JSON串转JSON数组
+            JSONArray jsonArray = JSON.parseArray(object.toString());
+            for (int i = 0; i < jsonArray.size(); i++) {
+                // 根据关键字提取JSON串中的内容
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                String Explain = jsonObject.getString("Explain");
+                String ConciseExplain = jsonObject.getString("ConciseExplain");
+                System.out.println(Explain + "\t" + ConciseExplain);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
+    /**
+     * 解析JSON数据
+     * String json = "{\"name\":\"Jack\", \"age\":18}";
+     * String name = jsonObject.getString("name");
+     * int age = jsonObject.getIntValue("age");
+     * System.out.println(name + ", " + age); //输出 Jack, 18
+     */
+    public static JSONObject explainJson(String json) {
+        return JSON.parseObject(json);
+    }
+
+    /**
+     * fastjson解析json数组
+     * String json = "[{\"name\":\"Jack\", \"age\":18}, {\"name\":\"Tom\", \"age\":20}]";
+     * JSONObject jsonObject = jsonArray.getJSONObject(i);
+     * String name = jsonObject.getString("name");
+     * int age = jsonObject.getIntValue("age");
+     * System.out.println(name + ", " + age);
+     *
+     * @param json
+     * @return
+     */
+    public static JSONArray explainJsonArray(String json) {
+        return JSON.parseArray(json);
+    }
+
+    // todo fastjson反序列化
+    /**
+     * User user = new User("Jack", 18);
+     * String json = JSON.toJSONString(user);
+     * System.out.println(json); //输出 {"name":"Jack","age":18}
+     */
+
+    // todo fastjson解析json字符串
+    /**
+     * String json = "{\"name\":\"Jack\", \"age\":18}";
+     * User user = JSON.parseObject(json, User.class);
+     * System.out.println(user.getName() + ", " + user.getAge()); //输出 Jack, 18
+     */
 }
