@@ -31,7 +31,12 @@ public class JSONUtil {
         String line = reader.readLine();
         int i = 0;
         while (line != null) {//line != null
-            if (line.contains("OptionE:")){
+//            if (line.contains("Media:")){
+//                if (line.substring(6).equals("null")){
+//                    System.out.println("站位符");
+//                }
+//            }
+            if (line.contains("Explain:")){
                 System.out.println(line.substring(8));
             }
             content.append(line);
