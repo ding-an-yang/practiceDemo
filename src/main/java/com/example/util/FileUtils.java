@@ -612,7 +612,7 @@ public class FileUtils {
      */
     public static void pdfToImagesFile(String filePath, String imagePath, float zoom) {
         org.icepdf.core.pobjects.Document document =  new org.icepdf.core.pobjects.Document();
-        float rotation = 0f;;
+        float rotation = 0f;
         try {
             /* 生成图片的名字*/
             //String imageName = UUID.randomUUID().toString();
